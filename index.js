@@ -1,9 +1,28 @@
+let yourScore = 0;
+let compScore = 0;
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        let player = button.id.toLowerCase();
+        let computer = getComputerChoice().toLowerCase();
+        let res = oneRound(player, computer);
+        if (res == "You win!") {
+            yourScore += 1;
+        } else if (res == "You lose!") {
+            compScore += 1;
+        }
+        endLogic();
+    })
+})
+
+
 function getComputerChoice() {
     let randNumber = Math.floor(Math.random()* 3);
-    if (randNumber == 1) {
+    if (randNumber == 0) {
         return "Rock";
     }
-    else if (randNumber == 2) {
+    else if (randNumber == 1) {
         return "Paper";
     }
     else {
@@ -12,10 +31,7 @@ function getComputerChoice() {
 }
 
 function oneRound(playerSelection, computerSelection) {
-    if ((computerSelection) == playerSelection) {
-        game();
-    }
-    else if (computerSelection == "Paper") {
+    if (computerSelection == "Paper") {
         if (playerSelection == "rock") {
             return ("You lose!");
         }
@@ -39,30 +55,18 @@ function oneRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    let player = prompt("Your choice (Rock/Paper/Scissors): ").toLowerCase();
-    let computer = getComputerChoice().toLowerCase();
-    let res = oneRound(player, computer);
-    return res;
-}
 
-let current = 0;
-let win = 0;
-let loss = 0;
-while (current < 5) {
-    let result = game();
-    current += 1;
-    if (result === "You win!") {
-        win += 1;
-    } else {
-        loss += 1;
+function endLogic() {
+    console.log(`Your wins: ${yourScore}`);
+    console.log(`Computer wins: ${compScore}`);
+
+    if (yourScore == 5 || compScore == 5) {
+        if (yourScore == 5) {
+            console.log("WINNER WINNER, CHICKEN DINNER!");
+        } else {
+            console.log("ROBOTS WIN!");
+        }
+        yourScore = 0;
+        compScore = 0;
     }
-}
-console.log(`Your wins: ${win}`);
-console.log(`Your losses: ${loss}`);
-
-if (win > loss) {
-    console.log("WINNER WINNER, CHICKEN DINNER!");
-} else {
-    console.log("YOU LOST!");
-}
+};
